@@ -1,0 +1,62 @@
+The wowza-libs dir contains libraries extracted from the wowza software that are required at build time. Current version is 1.5.0
+
+WowzaIceAuthModule for servers using ShoutCast retrieval:
+
+The test server will need to have shoutcast installed, cd to examples/SHOUTcast/ and run ./install.sh
+The auth module. Deploy by placing the .jar into lib/
+For shoutcast streams, edit conf/shoutcast/Application.xml and adding a module entry like this after the properties module:
+
+<Module>
+        <Name>WowzeIceAuth</Name>
+        <Description>Wowza Ice authentication and logging</Description>
+        <Class>net.lstoll.wowza.iceauth.WowzaIceShoutcastAuthModule</Class>
+</Module>
+
+Also adjust
+
+<Connections>
+        <AutoAccept>true</AutoAccept>
+        <AllowDomains></AllowDomains>
+</Connections>
+
+
+to
+
+<Connections>
+        <AutoAccept>false</AutoAccept>
+        <AllowDomains></AllowDomains>
+</Connections>
+
+and
+
+<Properties>
+        <!-- Properties defined here will be added to the IApplication.getProperties() and IApplicationInstance.getProperties() collections -->
+        <!--
+        <Property>
+                <Name></Name>
+                <Value></Value>
+        </Property>
+        -->
+</Properties>
+
+
+to
+
+<Properties>
+        <!-- Properties defined here will be added to the IApplication.getProperties() and IApplicationInstance.getProperties() collections -->
+        <Property>
+                <Name>WowzaIceAuth_StartSessionEndpoint</Name>
+                <Value>http://server/stream_auth/start_session</Value>
+        </Property>
+		<Property>
+                <Name>WowzaIceAuth_EndSessionEndpoint</Name>
+                <Value>http://server/stream_auth/end_session</Value>
+        </Property>
+</Properties>
+
+
+If you are developing, you'll want to edit the log4j config in conf/ and set the level at the beginning from INFO to DEBUG
+
+For direct connecting clients
+
+(needs testing)
